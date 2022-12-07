@@ -9,7 +9,7 @@ switch systemType
                 figure(1);
                 label_y = ["$q [^\circ/s]$","$\alpha [^\circ]$"];
                 for i = 1:2
-                    subplot(2,1,i); hold all
+                    subplot(2,1,i); grid on; hold all
                     ylabel(label_y(i),'Interpreter','latex','FontSize',12);
                     plot(T,Y(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
                 end
@@ -18,7 +18,7 @@ switch systemType
                 figure(2);
                 label_y = ["$r [^\circ/s]$","$\beta [^\circ]$"];
                 for i = 1:2
-                    subplot(2,1,i); hold all
+                    subplot(2,1,i); grid on; hold all
                     ylabel(label_y(i),'Interpreter','latex','FontSize',12);
                     plot(T,Y(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
                 end

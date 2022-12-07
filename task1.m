@@ -84,7 +84,7 @@ label_y = ["$q [^\circ/s]$","$\alpha [^\circ]$","$V [m/s]$","$\Theta [^\circ]$"]
 subplot_pos = 0;
 for i = 1:4
     subplot_pos = subplot_pos + 1;
-    subplot(4,2,subplot_pos); hold all
+    subplot(4,2,subplot_pos); grid on; hold all
     ylabel(label_y(i),'Interpreter','latex','FontSize',12);
     plot(T1,Y_Full_long1(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
     if i == 1
@@ -96,7 +96,7 @@ for i = 1:4
     end
 
     subplot_pos = subplot_pos + 1;
-    subplot(4,2,subplot_pos); hold all
+    subplot(4,2,subplot_pos); grid on; hold all
     plot(T2,Y_Full_long2(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
     if i == 1
         title('$\delta_e = 20^\circ$', ...
