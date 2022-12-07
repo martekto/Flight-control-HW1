@@ -106,5 +106,48 @@ for i = 1:4
         xlabel('time in $s$','Interpreter','latex','FontSize',12);
     end
 end
-
+hold off
 saveas(figure(3),'./figures/task1.3-thrust-elevator-comparison.png');
+
+% %% 1.3 With doublet input
+% 
+% Tsim_long = 10;
+% 
+% % Create doublet input
+% t = 0:.01:Tsim_long;
+% delta_e = (t>1)*.5 + (t>2)*(-1) + (t>3)*.5;
+% delta_t = delta_e;
+% 
+% Y_Full_t = lsim(sysFull_long(:,1),delta_t,t);
+% Y_Full_t(:,[1 2 4]) = rad2deg(Y_Full_t(:,[1 2 4]));
+% Y_Full_e = lsim(sysFull_long(:,2),delta_e,t);
+% Y_Full_e(:,[1 2 4]) = rad2deg(Y_Full_e(:,[1 2 4]));
+% 
+% figure(3);
+% label_y = ["$q [^\circ/s]$","$\alpha [^\circ]$","$V [m/s]$","$\Theta [^\circ]$"];
+% subplot_pos = 0;
+% for i = 1:4
+%     subplot_pos = subplot_pos + 1;
+%     subplot(4,2,subplot_pos); grid on; hold all
+%     ylabel(label_y(i),'Interpreter','latex','FontSize',12);
+%     plot(t,Y_Full_t(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
+%     if i == 1
+%         title('Doublet $\delta_t = \pm50\%$', ...
+%               'Interpreter','latex', ...
+%               'FontSize',16);
+%     elseif i == 4
+%         xlabel('time in $s$','Interpreter','latex','FontSize',12);
+%     end
+% 
+%     subplot_pos = subplot_pos + 1;
+%     subplot(4,2,subplot_pos); grid on; hold all
+%     plot(t,Y_Full_e(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
+%     if i == 1
+%         title('Doublet $\delta_e = \pm29^\circ$', ...
+%               'Interpreter','latex', ...
+%               'FontSize',16);
+%     elseif i == 4
+%         xlabel('time in $s$','Interpreter','latex','FontSize',12);
+%     end
+% end
+% hold off
