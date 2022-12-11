@@ -1,6 +1,8 @@
 % Task 1: Analysis of the eigenbehavior
 
 %% 1.1
+fprintf('Flying Qualities:\n')
+
 % Longitudinal Motion
 Tsim_long = 10;
 % Step input
@@ -35,6 +37,12 @@ alpha_ss = dcgain(delta_e_max*sp_approx(1,2));
 ratio_nzalpha = nz_ss/alpha_ss;
 CAP = Wn_sp(1)^2/ratio_nzalpha;
 
+fprintf('Short-period:\n');
+fprintf('natural frequency: %.3f\ndamping ratio: %.3f\n',Wn_sp(1),Z_sp(1));
+fprintf(['- Fingerprint plot: poor behavior\n', ...
+         '- Damping ratio limits (MIL-F-8785 C): level 1\n', ...
+         '- CAP-factor: level 1\n\n']);
+
 
 % Lateral-Directional Motion
 Tsim_lat = 15;
@@ -58,17 +66,9 @@ plotStepResponse(T,Y_dr_approx,"approximation","DR");
 % Natural frequency and damping
 [Wn_dr,Z_dr] = damp(dr_approx);
 
-fprintf('Aircraft class III, Category C\n');
-fprintf('------------------------Flying Qualities--------------------------\n');
-fprintf('Short-period:\n');
-fprintf('natural frequency: %.3f\ndamping ratio: %.3f\n',Wn_sp(1),Z_sp(1));
-fprintf(['- Fingerprint plot: poor behavior\n', ...
-         '- Damping ratio limits (MIL-F-8785 C): level 1\n', ...
-         '- CAP-factor: level 1\n\n']);
-
 fprintf('Dutch roll:\n');
 fprintf('natural frequency: %.3f\ndamping ratio: %.3f\n',Wn_dr(1),Z_dr(1));
-fprintf(['- Minimum dutch roll frequency and damping (MIL-F-8785 C): level 1\n']);
+fprintf(['- Minimum dutch roll frequency and damping (MIL-F-8785 C): level 1\n\n']);
 
 saveas(figure(1),'./figures/task1.1-longitudinal-comparison.png');
 saveas(figure(2),'./figures/task1.1-lateral-comparison.png');
@@ -79,7 +79,7 @@ delta_t_max = .1; % 10% throttle
 [Y_Full_long1,T1] = step(delta_t_max*sysFull_long(:,1),Tsim_long);
 Y_Full_long1(:,[1 2 4]) = rad2deg(Y_Full_long1(:,[1 2 4]));
 
-figure(3);
+figure(3); clf
 label_y = ["$q [^\circ/s]$","$\alpha [^\circ]$","$V [m/s]$","$\Theta [^\circ]$"];
 subplot_pos = 0;
 for i = 1:4
@@ -92,7 +92,7 @@ for i = 1:4
               'Interpreter','latex', ...
               'FontSize',16);
     elseif i == 4
-        xlabel('time in $s$','Interpreter','latex','FontSize',12);
+        xlabel('$t [s]$','Interpreter','latex','FontSize',12);
     end
 
     subplot_pos = subplot_pos + 1;
@@ -103,7 +103,7 @@ for i = 1:4
               'Interpreter','latex', ...
               'FontSize',16);
     elseif i == 4
-        xlabel('time in $s$','Interpreter','latex','FontSize',12);
+        xlabel('$t [s]$','Interpreter','latex','FontSize',12);
     end
 end
 

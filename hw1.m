@@ -53,18 +53,25 @@ sysFull_lat.InputName = {'\delta_a','\delta_r'};
 sysFull_lat.OutputName = sysFull_lat.StateName;
 sysFull_lat.TimeUnit = 'seconds';
 
+fprintf('Aircraft class III, Category C');
 
 %% Task 1: Analysis of the eigenbehavior
-task1
+fprintf('\n-----------------------------Task 1-------------------------------\n');
+%task1
 
 
 %% Task 2: Design of a flight controller with damper support in the longitudinal motion (SAS)
+fprintf('\n-----------------------------Task 2-------------------------------\n');
 %task2
 
 
 %% Task 3: Design of a base controller for ecoupling lateral aircraft movement (SAS)
+%clearvars -except plot_colors Vr H g C D A_long B_long sysFull_long A_lat B_lat sysFull_lat
+
+fprintf('\n-----------------------------Task 3-------------------------------\n');
 %task3
 
 
 %% Task 4: Testing the controllers in the nonlinear simulation
+fprintf('\n-----------------------------Task 4-------------------------------\n');
 %task4
