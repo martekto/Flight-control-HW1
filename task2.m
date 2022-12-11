@@ -12,8 +12,9 @@ fprintf("For the standard negative feedback, the root locus shows that the syste
 %figure(4); rlocus(-F_qdeltae); set(findall(gca,'Type','Line'),'LineWidth',1.5,'MarkerSize',10); grid on
 K_rlocus = .1683;
 
+Tsim_long = 10;
 sp_approx_rlocus = feedback(sp_approx,K_rlocus,2,1,1);
-[Y_sp_approx_rlocus, T_new] = step(delta_e_max*sp_approx_rlocus(:,2),Tsim_long);
+[Y_sp_approx_rlocus, T_rlocus] = step(delta_e_max*sp_approx_rlocus(:,2),Tsim_long);
 Y_sp_approx_rlocus = rad2deg(Y_sp_approx_rlocus);
 
 % Plot step response
@@ -22,7 +23,7 @@ label_y = ["$q [^\circ/s]$","$\alpha [^\circ]$"];
 for i = 1:2
     subplot(2,1,i); hold all; ylabel(label_y(i),'Interpreter','latex','FontSize',12);
     plot(T,Y_sp_approx(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','--');
-    plot(T_new,Y_sp_approx_rlocus(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','-');
+    plot(T_rlocus,Y_sp_approx_rlocus(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','-');
 end
 hold off
 grid on
@@ -120,7 +121,6 @@ label_y = ["$q [^\circ/s]$","$\alpha [^\circ]$","$V [m/s]$","$\Theta [^\circ]$"]
 for i = 1:4
     subplot(4,1,i); hold all; ylabel(label_y(i),'Interpreter','latex','FontSize',12);
     plot(T_new,Y_Full_long_new(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','-');
-    plot(T_new2,Y_Full_long_new2(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','-.')
     plot(T_place,Y_Full_long_place(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','--');
 end
 hold off
