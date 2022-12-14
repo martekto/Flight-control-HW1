@@ -76,7 +76,7 @@ saveas(figure(2),'./figures/task1.1-lateral-comparison.png');
 %% 1.3
 % Step input
 delta_t_max = .1; % 10% throttle
-[Y_Full_long2,T2] = step(delta_t_max*sysFull_long(:,1),Tsim_long);
+[Y_Full_long2,T_Full_long2] = step(delta_t_max*sysFull_long(:,1),Tsim_long);
 Y_Full_long2(:,[1 2 4]) = rad2deg(Y_Full_long2(:,[1 2 4]));
 
 figure(3); clf
@@ -86,7 +86,7 @@ for i = 1:4
     subplot_pos = subplot_pos + 1;
     subplot(4,2,subplot_pos); grid on; hold all
     ylabel(label_y(i),'Interpreter','latex','FontSize',12);
-    plot(T2,Y_Full_long2(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
+    plot(T_Full_long2,Y_Full_long2(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
     if i == 1
         title('$\delta_t = 10\%$', ...
               'Interpreter','latex', ...
@@ -97,7 +97,7 @@ for i = 1:4
 
     subplot_pos = subplot_pos + 1;
     subplot(4,2,subplot_pos); grid on; hold all
-    plot(T1,Y_Full_long1(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
+    plot(T_Full_long1,Y_Full_long1(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
     if i == 1
         title('$\delta_e = 20^\circ$', ...
               'Interpreter','latex', ...
