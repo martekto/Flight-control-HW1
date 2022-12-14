@@ -10,10 +10,10 @@ fprintf("For the standard negative feedback, the root locus shows that the syste
         "Hence, the positive feedback is to be considered.\n\n");
 
 %figure(4); rlocus(-F_qdeltae); set(findall(gca,'Type','Line'),'LineWidth',1.5,'MarkerSize',10); grid on
-K_rlocus = .1683;
+K_rlocus = -.1683;
 
 Tsim_long = 10;
-sp_approx_rlocus = feedback(sp_approx,K_rlocus,2,1,1);
+sp_approx_rlocus = feedback(sp_approx,K_rlocus,2,1,-1);
 [Y_sp_approx_rlocus, T_sp_approx_rlocus] = step(delta_e_max*sp_approx_rlocus(:,2),Tsim_long);
 Y_sp_approx_rlocus = rad2deg(Y_sp_approx_rlocus);
 
