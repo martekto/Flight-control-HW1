@@ -6,7 +6,7 @@ switch systemType
     case {"full", "Full"}
         switch modeName
             case {"short period","SP"}
-                figure(1); clf
+                figure(1);
                 label_y = ["$q [^\circ/s]$","$\alpha [^\circ]$"];
                 for i = 1:2
                     subplot(2,1,i); grid on; hold all
@@ -15,7 +15,7 @@ switch systemType
                 end
         
             case {"dutch roll","DR"}
-                figure(2); clf
+                figure(2);
                 label_y = ["$r [^\circ/s]$","$\beta [^\circ]$"];
                 for i = 1:2
                     subplot(2,1,i); grid on; hold all
@@ -30,7 +30,7 @@ switch systemType
     case{"approximation"}
         switch modeName
             case {"short period","SP"}
-                figure(1); clf
+                figure(1);
                 for i = 1:2
                     subplot(2,1,i);
                     plot(T,Y(:,i),'LineWidth',1.5, ...
@@ -48,7 +48,7 @@ switch systemType
                 lgd.Location = 'southeast'; lgd.NumColumns = 2;
 
             case {"dutch roll","DR"}
-                figure(2); clf
+                figure(2);
                 for i = 1:2
                     subplot(2,1,i);
                     plot(T,Y(:,i),'LineWidth',1.5, ...

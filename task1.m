@@ -9,18 +9,18 @@ Tsim_long = 10;
 delta_e_max = deg2rad(20); % elevator deflection of 20°
 
 % Full system
-[Y_Full_long2,T2] = step(delta_e_max*sysFull_long(:,2),Tsim_long);
-Y_Full_long2(:,[1 2 4]) = rad2deg(Y_Full_long2(:,[1 2 4]));
+[Y_Full_long1,T_Full_long1] = step(delta_e_max*sysFull_long(:,2),Tsim_long);
+Y_Full_long1(:,[1 2 4]) = rad2deg(Y_Full_long1(:,[1 2 4]));
 
-plotStepResponse(T2,Y_Full_long2(:,1:2),"full","SP");
+plotStepResponse(T_Full_long1,Y_Full_long1(:,1:2),"full","SP");
 
 % Approximation Short-Period
 sp_approx = approximateSystem(A_long,B_long,"SP");
 
-[Y_sp_approx,T] = step(delta_e_max*sp_approx(:,2),Tsim_long);
+[Y_sp_approx,T_sp_approx] = step(delta_e_max*sp_approx(:,2),Tsim_long);
 Y_sp_approx = rad2deg(Y_sp_approx);
 
-plotStepResponse(T,Y_sp_approx,"approximation","SP");
+plotStepResponse(T_sp_approx,Y_sp_approx,"approximation","SP");
 
 % Natural frequency and damping
 [Wn_sp,Z_sp] = damp(sp_approx);
@@ -50,18 +50,18 @@ Tsim_lat = 15;
 delta_r_max = deg2rad(20); % ruder deflection of 20°
 
 % Full system
-[Y_Full_lat,T] = step(delta_r_max*sysFull_lat(1:2,2),Tsim_lat);
+[Y_Full_lat,T_Full_lat] = step(delta_r_max*sysFull_lat(1:2,2),Tsim_lat);
 Y_Full_lat = rad2deg(Y_Full_lat);
 
-plotStepResponse(T,Y_Full_lat,"full","DR");
+plotStepResponse(T_Full_lat,Y_Full_lat,"full","DR");
 
 % Approximation Dutch Roll
 dr_approx = approximateSystem(A_lat,B_lat,'DR');
 
-[Y_dr_approx,T] = step(delta_r_max*dr_approx(:,2),Tsim_lat);
+[Y_dr_approx,T_dr_approx] = step(delta_r_max*dr_approx(:,2),Tsim_lat);
 Y_dr_approx = rad2deg(Y_dr_approx);
 
-plotStepResponse(T,Y_dr_approx,"approximation","DR");
+plotStepResponse(T_dr_approx,Y_dr_approx,"approximation","DR");
 
 % Natural frequency and damping
 [Wn_dr,Z_dr] = damp(dr_approx);
@@ -76,8 +76,8 @@ saveas(figure(2),'./figures/task1.1-lateral-comparison.png');
 %% 1.3
 % Step input
 delta_t_max = .1; % 10% throttle
-[Y_Full_long1,T1] = step(delta_t_max*sysFull_long(:,1),Tsim_long);
-Y_Full_long1(:,[1 2 4]) = rad2deg(Y_Full_long1(:,[1 2 4]));
+[Y_Full_long2,T2] = step(delta_t_max*sysFull_long(:,1),Tsim_long);
+Y_Full_long2(:,[1 2 4]) = rad2deg(Y_Full_long2(:,[1 2 4]));
 
 figure(3); clf
 label_y = ["$q [^\circ/s]$","$\alpha [^\circ]$","$V [m/s]$","$\Theta [^\circ]$"];
@@ -86,7 +86,7 @@ for i = 1:4
     subplot_pos = subplot_pos + 1;
     subplot(4,2,subplot_pos); grid on; hold all
     ylabel(label_y(i),'Interpreter','latex','FontSize',12);
-    plot(T1,Y_Full_long1(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
+    plot(T2,Y_Full_long2(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
     if i == 1
         title('$\delta_t = 10\%$', ...
               'Interpreter','latex', ...
@@ -97,7 +97,7 @@ for i = 1:4
 
     subplot_pos = subplot_pos + 1;
     subplot(4,2,subplot_pos); grid on; hold all
-    plot(T2,Y_Full_long2(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
+    plot(T1,Y_Full_long1(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
     if i == 1
         title('$\delta_e = 20^\circ$', ...
               'Interpreter','latex', ...
@@ -108,46 +108,3 @@ for i = 1:4
 end
 hold off
 saveas(figure(3),'./figures/task1.3-thrust-elevator-comparison.png');
-
-% %% 1.3 With doublet input
-% 
-% Tsim_long = 10;
-% 
-% % Create doublet input
-% t = 0:.01:Tsim_long;
-% delta_e = (t>1)*.5 + (t>2)*(-1) + (t>3)*.5;
-% delta_t = delta_e;
-% 
-% Y_Full_t = lsim(sysFull_long(:,1),delta_t,t);
-% Y_Full_t(:,[1 2 4]) = rad2deg(Y_Full_t(:,[1 2 4]));
-% Y_Full_e = lsim(sysFull_long(:,2),delta_e,t);
-% Y_Full_e(:,[1 2 4]) = rad2deg(Y_Full_e(:,[1 2 4]));
-% 
-% figure(3);
-% label_y = ["$q [^\circ/s]$","$\alpha [^\circ]$","$V [m/s]$","$\Theta [^\circ]$"];
-% subplot_pos = 0;
-% for i = 1:4
-%     subplot_pos = subplot_pos + 1;
-%     subplot(4,2,subplot_pos); grid on; hold all
-%     ylabel(label_y(i),'Interpreter','latex','FontSize',12);
-%     plot(t,Y_Full_t(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
-%     if i == 1
-%         title('Doublet $\delta_t = \pm50\%$', ...
-%               'Interpreter','latex', ...
-%               'FontSize',16);
-%     elseif i == 4
-%         xlabel('time in $s$','Interpreter','latex','FontSize',12);
-%     end
-% 
-%     subplot_pos = subplot_pos + 1;
-%     subplot(4,2,subplot_pos); grid on; hold all
-%     plot(t,Y_Full_e(:,i),'LineWidth',1.5,'Color',plot_colors(1,:));
-%     if i == 1
-%         title('Doublet $\delta_e = \pm29^\circ$', ...
-%               'Interpreter','latex', ...
-%               'FontSize',16);
-%     elseif i == 4
-%         xlabel('time in $s$','Interpreter','latex','FontSize',12);
-%     end
-% end
-% hold off
