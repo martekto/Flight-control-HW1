@@ -23,7 +23,7 @@ function plotResponseLateral(newSystem,x0,TFINAL,controlInput,inputDeflection,TS
 %   All time variables are in second
 %   
 %   Other example,
-
+%
 %       plotResponseLateral(sysFull_lat_cl,[0,1,0,-1]',50)
 %
 
@@ -52,10 +52,6 @@ sysFull_lat.TimeUnit = 'seconds';
 if nargin == 3
     [Y_Full_lat,T_Full_lat,~] = initial(sysFull_lat,x0,TFINAL);
     [Y_newSystem,T_newSystem,~] = initial(newSystem,x0,TFINAL);
-
-    plot_title = sprintf("Initial condition $x_{0} = [%.f,%.f,%.f,%.f]'$", ...
-                         x0(1),x0(2),x0(3),x0(4));
-
 else
     tsim = 0:.01:TFINAL;
     input = (tsim>=TSTART)*deg2rad(inputDeflection) + (tsim>=TEND)*deg2rad(-inputDeflection);
@@ -66,18 +62,32 @@ end
 Y_Full_lat = rad2deg(Y_Full_lat);
 Y_newSystem = rad2deg(Y_newSystem);
 
+% calculate heading
+% phi_Full_lat = deg2rad(Y_Full_lat(:,4));
+% heading_Full_lat = T_Full_lat.*rad2deg(tan(phi_Full_lat)*9.81/(180/1.944));
+% phi_newSystem = deg2rad(Y_newSystem(:,4));
+% heading_newSystem = T_newSystem.*rad2deg(tan(phi_newSystem)*9.81/(180/1.944));
+
+
 % plot the result
 h = gcf;
-figure(h.Number+1); clf; 
+figure(h.Number+1); clf;
 label_y = ["$r [^\circ/s]$","$\beta [^\circ]$","$p [^\circ/s]$","$\Phi [^\circ]$"];
+% label_y = ["$r [^\circ/s]$","$\beta [^\circ]$","$p [^\circ/s]$","$\Phi [^\circ]$","$Heading [^\circ]$"];
 for i = 1:length(x0)
     subplot(length(x0),1,i); hold all; grid on; ylabel(label_y(i),'Interpreter','latex','FontSize',12);
+%     subplot(length(x0)+1,1,i); hold all; grid on; ylabel(label_y(i),'Interpreter','latex','FontSize',12);
     plot(T_Full_lat,Y_Full_lat(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','--');
     plot(T_newSystem,Y_newSystem(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','-');
 end
+% subplot(length(x0)+1,1,5); hold on; grid on; ylabel(label_y(5),'Interpreter','latex','FontSize',12);
+% plot(T_Full_lat,heading_Full_lat,'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','--');
+% plot(T_Full_lat,heading_newSystem,'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','-');
 hold off
 xlabel('$t [s]$','Interpreter','latex','FontSize',12);
 subplot(length(x0),1,length(x0)); lgd = legend('open-loop','with feedback gain controller');
 lgd.Location = 'best'; lgd.FontSize = 11;
 lgd.Interpreter = 'latex'; lgd.NumColumns = 2;
+plot_title = sprintf("Initial condition $x_{0} = [%.f,%.f,%.f,%.f]'$", ...
+                     x0(1),x0(2),x0(3),x0(4));
 subplot(length(x0),1,1); title(plot_title,'Interpreter','latex','FontSize',14)

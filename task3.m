@@ -7,15 +7,23 @@ rank(Qc);
 
 
 %% 3.3
+
+% original system
+[Wn_Full_lat,Z_Full_lat,P_Full_lat] = damp(sysFull_lat);
+
 % Roll time constant
-T_R = 1.0;
-eval_R = -1/T_R;
+eval_R = P_Full_lat(Wn_Full_lat==max(Wn_Full_lat));
 
 % Dutch roll
-eval_DR = [-.09-.954j -.09+.954j];
+%Z_DR = .3;
+Z_DR = .7;
+Wn_DR = Wn_Full_lat(2);
+eval_DR = [-Z_DR*Wn_DR+1j*Wn_DR*sqrt(1-Z_DR^2) -Z_DR*Wn_DR-1j*Wn_DR*sqrt(1-Z_DR^2)];
 
 % Spiral
-eval_S = .01;
+T2_R_Full_lat = log(2)/P_Full_lat(P_Full_lat>0);
+T2_R = T2_R_Full_lat*(1+.5); % increase spiral doubling time by 50%
+eval_S = log(2)/T2_R;
 
 desiredPoles = [eval_R, eval_DR, eval_S]; % Roll, Dutch roll, Spiral
 
@@ -24,7 +32,7 @@ desiredPoles = [eval_R, eval_DR, eval_S]; % Roll, Dutch roll, Spiral
 
 % Eigenstructure assignment: Roll
 v_1d = [1 0 1 1]'; % [* 0 1 *]'
-D1 = [eye(2),zeros(size(A_lat)-2)];
+D1 = [0 1 0 0;0 0 1 0];
 v1_tilde = D1*v_1d;
 
 lambda1 = desiredPoles(1);
@@ -69,56 +77,24 @@ sysFull_lat_cl = feedback(sysFull_lat,K);
 
 
 %% 3.5
-Tsim_lat = 10;
+Tsim_lat = 100;
 
 % initial conditions
 x01 = [1 0 0 0]';
 x02 = [0 0 1 0]';
 
-% open-loop simulation
-[Y1,T1,~] = initial(sysFull_lat,x01,Tsim_lat);
-Y1 = rad2deg(Y1);
-[Y2,T2,~] = initial(sysFull_lat,x02,Tsim_lat);
-Y2 = rad2deg(Y2);
-
-% closed-loop simulation (feedback gain controller using eigenstructure
-% assignment)
-[Ycl1,Tcl1,~] = initial(sysFull_lat_cl,x01,Tsim_lat);
-Ycl1 = rad2deg(Ycl1);
-[Ycl2,Tcl2,~] = initial(sysFull_lat_cl,x02,Tsim_lat);
-Ycl2 = rad2deg(Ycl2);
-
-% plots
-% % initial condition x01
-% figure(7); clf;
-% label_y = ["$r [^\circ/s]$","$\beta [^\circ]$","$p [^\circ/s]$","$\Phi [^\circ]$"];
-% for i = 1:4
-%     subplot(4,1,i); grid on; hold all; ylabel(label_y(i),'Interpreter','latex','FontSize',12);
-%     plot(T1,Y1(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','--');
-%     plot(Tcl1,Ycl1(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','-');
-% end
-% hold off
-% xlabel('$t [s]$','Interpreter','latex','FontSize',12);
-% subplot(4,1,3); lgd = legend('open-loop','with feedback gain controller');
-% lgd.Location = 'northeast'; lgd.FontSize = 11;
-% lgd.Interpreter = 'latex'; lgd.NumColumns = 1;
-% subplot(4,1,1); title("Initial condition $x_{0,1} = [1,0,0,0]'$", ...
-%                       'Interpreter','latex', 'FontSize',14);
+% % open-loop simulation
+% [Y1,T1,~] = initial(sysFull_lat,x01,Tsim_lat);
+% Y1 = rad2deg(Y1);
+% [Y2,T2,~] = initial(sysFull_lat,x02,Tsim_lat);
+% Y2 = rad2deg(Y2);
 % 
-% % initial condition x02
-% figure(8); clf;
-% label_y = ["$r [^\circ/s]$","$\beta [^\circ]$","$p [^\circ/s]$","$\Phi [^\circ]$"];
-% for i = 1:4
-%     subplot(4,1,i); grid on; hold all; ylabel(label_y(i),'Interpreter','latex','FontSize',12);
-%     plot(T2,Y2(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','--');
-%     plot(Tcl2,Ycl2(:,i),'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','-');
-% end
-% hold off
-% xlabel('$t [s]$','Interpreter','latex','FontSize',12);
-% subplot(4,1,3); lgd = legend('open-loop','with feedback gain controller');
-% lgd.Location = 'northeast'; lgd.FontSize = 11;
-% lgd.Interpreter = 'latex'; lgd.NumColumns = 1;
-% subplot(4,1,1); title("Initial condition $x_{0,2} = [0,0,1,0]'$", ...
-%                       'Interpreter','latex', 'FontSize',14);
+% % closed-loop simulation (feedback gain controller using eigenstructure
+% % assignment)
+% [Ycl1,Tcl1,~] = initial(sysFull_lat_cl,x01,Tsim_lat);
+% Ycl1 = rad2deg(Ycl1);
+% [Ycl2,Tcl2,~] = initial(sysFull_lat_cl,x02,Tsim_lat);
+% Ycl2 = rad2deg(Ycl2);
+
 plotResponseLateral(sysFull_lat_cl,x01,Tsim_lat);
 plotResponseLateral(sysFull_lat_cl,x02,Tsim_lat);
