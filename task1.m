@@ -47,7 +47,7 @@ fprintf(['- Fingerprint plot: poor behavior\n', ...
 % Lateral-Directional Motion
 Tsim_lat = 15;
 % Step input
-delta_r_max = deg2rad(20); % ruder deflection of 20°
+delta_r_max = deg2rad(20); % rudder deflection of 20°
 
 % Full system
 [Y_Full_lat,T_Full_lat] = step(delta_r_max*sysFull_lat(1:2,2),Tsim_lat);
