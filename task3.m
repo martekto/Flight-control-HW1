@@ -32,7 +32,8 @@ desiredPoles = [eval_R, eval_DR, eval_S]; % Roll, Dutch roll, Spiral
 
 % Eigenstructure assignment: Roll
 v_1d = [1 0 1 1]'; % [* 0 1 *]'
-D1 = [0 1 0 0;0 0 1 0];
+D1 = [0 1 0 0; 
+        0 0 1 0];
 v1_tilde = D1*v_1d;
 
 lambda1 = desiredPoles(1);

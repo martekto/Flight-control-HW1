@@ -12,6 +12,5 @@ ones_array = ones([1,26442])*0.5;
 figure(10); clf
 for i = 1:4
     subplot(4,1,i); hold all; grid on; 
-    ylabel(label_y(i),'Interpreter','latex','FontSize',12);
-    plot(time_rp,ones_array,'LineWidth',1.5,'Color',plot_colors(1,:),'LineStyle','--');
+    plot(time_rp,file_rp.data.wd_rb);
 end
