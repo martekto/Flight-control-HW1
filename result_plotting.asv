@@ -1,0 +1,6 @@
+filename = "sw_0037004_TUB614_0501.mat";
+
+figure(1);
+label_y = ["first one","second one"];
+ylabel(label_y(1),'Interpreter','latex','FontSize',12);
+plot(T,Y(:,1),'LineWidth',1.5,'Color',plot_colors(1,:));
